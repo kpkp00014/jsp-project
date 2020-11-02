@@ -23,18 +23,33 @@
 		// select 를 수행하면 데이터정보가 ResultSet 클래스의 인스턴스로 리턴됨.
 		ResultSet rs = pstmt.executeQuery();
 		if(rs.next()){
-%>
-		<h4>로그인 성공</h4>
-<%
-		} else {
-%>
-			<h4>로그인 실패</h4>
-<%
-		}
+			session.setAttribute("username",request.getParameter("id"));
+			
 		// 사용한 자원의 반납.
 		rs.close();
 		pstmt.close();
 		conn.close();
+%>
+		<h4>로그인 성공</h4>
+		# <%= session.getAttribute("username") %> 님 환영 합니다.!!!!<BR>
+		1. 세션 ID : <%= session.getId() %> <BR>
+		2. 세션 유지시간 : <%= session.getMaxInactiveInterval() %> <BR>
+		<a href="main.jsp">메인화면으로</a>
+
+<%
+		} else {
+			
+			// 사용한 자원의 반납.
+			rs.close();
+			pstmt.close();
+			conn.close();
+
+			session.setAttribute("username", null);
+			out.println("<script>");
+			out.println("alert('로그인 실패')");
+			out.println("location='main.jsp'");
+			out.println("</script>");
+		}
 	}
 	catch(Exception e) {
 		out.println(e);

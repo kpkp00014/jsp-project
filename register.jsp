@@ -24,8 +24,17 @@
 		pstmt.setString(1,request.getParameter("id"));
 		pstmt.setString(2,request.getParameter("passwd"));
     	pstmt.executeUpdate();
+
+        out.println("<script>");
+        out.println("alert('회원가입 성공!')");
+        out.println("location='main.jsp'");
+        out.println("</script>");
 	}
 	catch(Exception e) {
-		out.println(e);	
+        System.out.println(e);
+        out.println("<script>");
+        out.println("alert('회원가입 실패')");
+        out.println("location='main.jsp'");
+        out.println("</script>");
 	}
 %>
