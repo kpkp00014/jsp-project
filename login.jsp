@@ -29,7 +29,7 @@
 		rs.close();
 		pstmt.close();
 		conn.close();
-		response.sendRedirect("main.jsp");
+		response.sendRedirect("index.jsp");
 		} else {
 			
 			// 사용한 자원의 반납.
@@ -40,7 +40,7 @@
 			session.setAttribute("username", null);
 			out.println("<script>");
 			out.println("alert('로그인 실패')");
-			out.println("location='main.jsp'");
+			out.println("location='index.jsp'");
 			out.println("</script>");
 		}
 	}

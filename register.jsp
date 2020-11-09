@@ -27,14 +27,14 @@
 
         out.println("<script>");
         out.println("alert('회원가입 성공!')");
-        out.println("location='main.jsp'");
+        out.println("location='index.jsp'");
         out.println("</script>");
 	}
 	catch(Exception e) {
         System.out.println(e);
         out.println("<script>");
         out.println("alert('회원가입 실패')");
-        out.println("location='main.jsp'");
+        out.println("location='index.jsp'");
         out.println("</script>");
 	}
 %>
