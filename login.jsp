@@ -29,14 +29,7 @@
 		rs.close();
 		pstmt.close();
 		conn.close();
-%>
-		<h4>로그인 성공</h4>
-		# <%= session.getAttribute("username") %> 님 환영 합니다.!!!!<BR>
-		1. 세션 ID : <%= session.getId() %> <BR>
-		2. 세션 유지시간 : <%= session.getMaxInactiveInterval() %> <BR>
-		<a href="main.jsp">메인화면으로</a>
-
-<%
+		response.sendRedirect("main.jsp");
 		} else {
 			
 			// 사용한 자원의 반납.
