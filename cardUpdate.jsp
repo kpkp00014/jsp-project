@@ -5,10 +5,10 @@
 <jsp:useBean id="rm" class="project.room.RoomManager" scope="application"/>
 <%@ page import="project.room.RoomBean" %>
 <%
-   //방번호 get
+    //방번호 get
+    String sessionId = (String) session.getId();
     Integer rNum = (Integer) session.getAttribute("room");
     RoomBean room = new RoomBean();
-    String sessionId = (String) session.getId();
     // 현재 방 선택
     for(RoomBean r : rm.getRoomList()) {
         if(r.getR_id()==rNum) {
@@ -16,13 +16,7 @@
           break;
         }
     }
-    // 방 멤버에서 뺀다
-    room.removeR_member(sessionId);
-    session.removeAttribute("room");
-
-    // 방 남은 멤버수가 0이면, 삭제
-    if(room.getR_memberSize()==0) {
-        rm.remove(room);
-    }
-    response.sendRedirect("index.jsp");
+    int index = Integer.parseInt(request.getParameter("index"));
+    room.useCard(sessionId, index);
+    response.sendRedirect("room.jsp");
 %>

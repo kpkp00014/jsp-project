@@ -16,7 +16,7 @@ public class RoomManager {
         return roomlist;
     }
 
-    public void getAddr(Integer r_id) {
+    public void getR_id(Integer r_id) {
         for (RoomBean rb : roomlist) {
             if (rb.getR_id().equals(r_id))
                 roomlist.remove(rb);
