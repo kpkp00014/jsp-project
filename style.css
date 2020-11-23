@@ -23,6 +23,7 @@
 
 table {
     border-collapse: collapse;
+    width: 200px;
 }
 
 th, td {
@@ -45,4 +46,10 @@ th, td {
     text-align: center;
     width: 200px;
     height: 200px;
+}
+
+.tableTitle.self {
+    border: #d4e;
+    background-color: #d4e;
+    color: #444444;
 }

@@ -35,7 +35,7 @@ if(session.getAttribute("username")!=null){
             <tr>
             <td><%=room.getR_id() %></td>
             <td><a href="enterRoom.jsp?rm=<%=room.getR_id()%>"><%=room.getR_name() %></a></td>
-            <td><%=room.getR_memberSize() %>/4</td>
+            <td><%=room.getR_memberSize() %>/3</td>
             </tr>
         <%
         }

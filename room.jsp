@@ -38,13 +38,35 @@
 <h4>방 이름 : <%=room.getR_name()%></h4>
 
 
+
 <div class="gameNum">
     <%=gameNum%>
 </div>
 
 <table>
     <tr>
-        <th class="tableTitle" colspan="2"><%=room.getR_name()%></th>
+    <%
+        // 인게임 내에선 방제목이 아니라, 현재 누구의 턴인지를 표시한다
+        if(room.get_currentStatus()==1) {
+            if(room.get_currentUser()==session.getAttribute("username")) {
+                // 플레이어의 턴인 경우
+                %>
+                <th class="tableTitle self" colspan="2">당신의 턴!</th>
+                <%
+            } else {
+                // 다른 플레이어의 턴인 경우
+                %>
+                <th class="tableTitle" colspan="2"><%=room.get_currentUser()%>의 턴!</th>
+                <%
+            }
+        } else {
+            // status가 1이 아닌 경우
+            %>
+            <th class="tableTitle" colspan="2"><%=room.getR_name()%></th>
+            <%
+        }
+    %>
+        
     </tr>
     <tr>
         <th>이름</th>
@@ -57,14 +79,47 @@
         </tr>
     </c:forEach>
 </table>
-
+<%
+    if(room.get_currentStatus()==1){
+        // 게임 플레이 중일때만, 카드가 보인다
+%>
 <div class="cards noselect">
     <c:forEach var="card" items="${cards}" varStatus="status">
         <div class="card noselect" data-index="${status.index}">${card}</div>
     </c:forEach>
 </div>
-
+<%
+    } else if (room.getR_memberSize()==3&&room.get_currentStatus()==0) {
+        // game status가 1이고 플레이어가 3명이 모이면 게임을 시작한다
+        room.game_start();
+    }
+%>
 <form action='exitRoom.jsp'>
 <input type='submit' value='나가기'>
 </form>
+<% if(room.get_currentUser()==session.getAttribute("username")) {
+    // 자신의 차례일때만, 카드를 선택할 수 있다
+    %>
 <script src="js/cardSelect.js"></script>
+<%
+    }
+%>
+
+<%
+    if(room.get_currentStatus()<2){
+    // 게임이 종료 상태일 땐, 새로고침하지 않는다
+%>
+<script src="js/setTimeout.js"></script>
+<%
+    } else {
+        String loser = room.get_loser();
+        out.println("<script>alert('패배 : "+ loser + "')</script>");
+        %>
+    <div>
+        
+        <h4>게임이 종료되었습니다.</h4>
+        <h4><%=loser%> 님의 패배입니다.</h4>
+    </div>
+        <%
+    }
+%>
