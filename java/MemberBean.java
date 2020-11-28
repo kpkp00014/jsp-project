@@ -7,6 +7,7 @@ public class MemberBean {
     private String id;
     private String name;
     private ArrayList<Integer> card = new ArrayList<Integer>();
+    private Boolean cardDraw = false;
 
     public String getId() {
         return this.id;
@@ -14,6 +15,10 @@ public class MemberBean {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void reverseDraw() {
+        this.cardDraw = !this.cardDraw;
     }
 
     public String getName() {
@@ -28,9 +33,9 @@ public class MemberBean {
         return this.card;
     }
 
-    // 2~6 랜덤한 숫자의 카드 생성
+    // 2~5 랜덤한 숫자의 카드 생성
     public void newCard() {
-        Integer iValue = (int) (Math.random() * 5 + 2);
+        Integer iValue = (int) (Math.random() * 3.5) + (int) (Math.random() * 1.5) + 2;
         this.card.add(iValue);
     }
 
@@ -38,6 +43,10 @@ public class MemberBean {
     public Integer useCard(int n) {
         Integer card = this.card.get(n);
         this.card.remove(n);
+        if (cardDraw) {
+            newCard();
+        }
+        reverseDraw();
         return card;
     }
 

@@ -53,3 +53,46 @@ th, td {
     background-color: #d4e;
     color: #444444;
 }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    max-width: 720px;
+}
+
+.header h3,h2 {
+    display: inline-block;
+}
+
+.header a {
+    text-decoration: none;
+    color: black;
+}
+
+.ranking_table {
+    width: 90%;
+    max-width: 720px;
+}
+
+tr.highlight {
+    background: #ae2abd;
+    color: #e2edcc;
+}
+
+th {
+    background: #444444;
+    color: #dddddd;
+}
+
+.main_info {
+    width: 100%;
+    max-width: 540px;
+    text-align: left;
+}
+.main_info p {
+    line-height: 1.5em;
+    font-size: 1.3em;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 3px;
+}

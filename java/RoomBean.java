@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.lang.Math;
 import project.member.MemberBean;
 
+import javax.sql.*;
+import java.sql.*;
+
 public class RoomBean {
     // 멤버변수 선언
     private Integer r_id;
@@ -14,6 +17,7 @@ public class RoomBean {
     private String current_user = null;
     private Integer current_status = 0;
     private String loser = null;
+    private String winner = null;
     // status 0 = game prepare state
     // state 1 = in game state
     // state 2 = game finished state
@@ -43,6 +47,10 @@ public class RoomBean {
         return this.loser;
     }
 
+    public String get_winner() {
+        return this.winner;
+    }
+
     public void setR_name(String r_name) {
         this.r_name = r_name;
     }
@@ -56,7 +64,7 @@ public class RoomBean {
             MemberBean member = new MemberBean();
             member.setId(id);
             member.setName(name);
-            member.initCard(7);
+            member.initCard(5);
             this.r_member.add(member);
         }
     }
@@ -67,7 +75,8 @@ public class RoomBean {
                 if (this.current_status == 1) {
                     // if ingame?
                     this.current_status = 3;
-                    this.loser = this.r_member.get(counter).getId();
+                    this.loser = this.r_member.get(counter).getName();
+                    endGame();
                 }
                 this.r_member.remove(counter);
 
@@ -101,6 +110,7 @@ public class RoomBean {
         this.current_user = null;
         this.current_status = 0;
         this.loser = null;
+        this.winner = null;
     }
 
     public void addGameNum(Integer n) {
@@ -162,9 +172,61 @@ public class RoomBean {
 
     public void score_check() {
         // if current num is bigger than 60, game finish
-        if (this.game_num >= 60) {
+        if (this.game_num == 60) {
+            this.current_status = 2;
+            this.winner = this.current_user;
+            endGame();
+        } else if (this.game_num > 60) {
             this.current_status = 2;
             this.loser = this.current_user;
+            endGame();
+        }
+    }
+
+    public void endGame() {
+        if (get_loser() != null || get_winner() != null) {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
+            String sql = "call game_result(?, ?, ?)";
+            String jdbc_driver = "com.mysql.cj.jdbc.Driver";
+            String jdbc_url = "jdbc:mysql://192.168.99.100/cardstack";
+            try {
+                // JDBC 드라이버 로드
+                Class.forName(jdbc_driver);
+                // 데이터베이스 연결정보를 이용해 Connection 인스턴스 확보
+                conn = DriverManager.getConnection(jdbc_url, "web2020", "web2020");
+
+                for (int i = 0; i < r_member.size(); i++) {
+                    pstmt = conn.prepareStatement(sql);
+                    MemberBean m = r_member.get(i);
+                    String uid = m.getName();
+                    pstmt.setString(1, uid);
+                    if (get_loser() != null) {
+                        // 패자가 있는 게임의 경우
+                        if (uid == get_loser()) {
+                            pstmt.setInt(2, 0);
+                            pstmt.setInt(3, 2);
+                        } else {
+                            pstmt.setInt(2, 1);
+                            pstmt.setInt(3, 0);
+                        }
+                    } else {
+                        // 승자가 있는 게임의 경우
+                        if (uid == get_winner()) {
+                            pstmt.setInt(2, 2);
+                            pstmt.setInt(3, 0);
+                        } else {
+                            pstmt.setInt(2, 0);
+                            pstmt.setInt(3, 1);
+                        }
+                    }
+                    pstmt.executeQuery();
+                    pstmt.close();
+                }
+                conn.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 }

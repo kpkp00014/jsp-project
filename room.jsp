@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.sql.*" errorPage="error.jsp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  import="java.sql.*" errorPage="error.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <% request.setCharacterEncoding("utf-8"); %>
 <link href="style.css" rel="stylesheet" type="text/css">
@@ -113,12 +113,20 @@
 <%
     } else {
         String loser = room.get_loser();
-        out.println("<script>alert('패배 : "+ loser + "')</script>");
+        String winner = room.get_winner();
+
+        if(room.get_loser() != null) {
+            out.println("<script>alert('패배 : "+ loser + "')</script>");
+        } else {
+            out.println("<script>alert('승리 : "+ winner + "')</script>");
+        }
         %>
     <div>
-        
         <h4>게임이 종료되었습니다.</h4>
-        <h4><%=loser%> 님의 패배입니다.</h4>
+        <%
+        if(loser!=null) out.println("<h4>"+loser+"님의 패배입니다.</h4>");
+        else out.println("<h4>"+winner+"님의 승리입니다.</h4>");
+        %>
     </div>
         <%
     }

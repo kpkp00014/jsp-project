@@ -24,33 +24,12 @@
   <!-- 메타컴플릿이 true면 annotation을 읽지 못함-->
     <!-- Define servlets that are included in the example application -->
 
-   <login-config>
-    <auth-method>BASIC</auth-method>
-    <realm-name>WebAdminRealm</realm-name>
-  </login-config>
-  <context-param>
-    <param-name>workspace</param-name>
-    <param-value>c:\dev\workspace</param-value>
-  </context-param>
-  <context-param>
-    <param-name>name3</param-name>
-    <param-value>user3</param-value>
-  </context-param>
   <context-param>
     <param-name>encoding</param-name>
     <param-value>utf-8</param-value>
   </context-param>
-  <context-param>
-    <param-name>propfile</param-name>
-    <param-value>/usr/local/tomcat/webapps/my.conf</param-value>
-  </context-param>
-  <error-page>
-	<exception-type>java.lang.Throwable</exception-type>
-	<location>/error/error.jsp</location>
-  </error-page>
-
-  <error-page>
-	<error-code>404</error-code>
-	<location>/error/404-error.jsp</location>
-  </error-page>
+  <resource-ref>
+    <res-ref-name>jdbc/mysql</res-ref-name>
+    <res-auth>Container</res-auth>
+  </resource-ref>
 </web-app>
