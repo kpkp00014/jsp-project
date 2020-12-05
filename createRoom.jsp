@@ -8,6 +8,7 @@
     // 방 생성
     RoomBean room = new RoomBean();
     String rName = request.getParameter("r_name");
+    if(rName.length()>0){
     Integer rnumber = (Integer) application.getAttribute("rnumber");
     if(rnumber == null) {
         rnumber = 1;
@@ -20,4 +21,12 @@
 	rm.add(room);
     session.setAttribute("room", rnumber);
     response.sendRedirect("room.jsp");
+    } else {
+        %>
+        <script>
+            alert("방 이름을 입력해 주세요!");
+            history.go(-1);
+	    </script>
+        <%
+    }
 %>

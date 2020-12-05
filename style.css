@@ -6,6 +6,21 @@
     -ms-user-select: none;
     user-select: none;
 }
+.container {
+    width: 100%;
+    max-width: 720px;
+    min-height: 70vh;
+    height: auto;
+}
+.footer {
+    text-align: right;
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+}
+.footer p {
+    margin: 0 0 0 15px;
+}
 .card {
     border: 1px solid black;
     background: white;
@@ -23,35 +38,51 @@
 
 table {
     border-collapse: collapse;
-    width: 200px;
+    width: 100%;
+    display: table;
+    margin-bottom: 15px;
 }
 
 th, td {
-    border-bottom: 1px solid #444444;
     text-align: center;
     padding: 5px;
 }
 
+tr:nth-child(2n+1) td {
+    background: #eee;
+}
+
 .tableTitle {
-    border: 3px solid #777777;
     background-color: #777777;
     color: #dddddd;
 }
 
 .gameNum {
-    background: beige;
-    color: #444444;
+    background: #39CCCC;
+    color: #111111;
     line-height: 200px;
     font-size: 3em;
     text-align: center;
     width: 200px;
     height: 200px;
 }
+.gameNum_bg {
+    background: linear-gradient(to right, white, #39CCCC, white);
+    width: 100%;
+}
+.gameNum_bg.end {
+    
+    background: linear-gradient(to right, white, #85144b, white);
+    color: #7FDBFF;
+}
+.gameNum_bg.end .gameNum {
+    background: #85144b;
+}
+
 
 .tableTitle.self {
-    border: #d4e;
-    background-color: #d4e;
-    color: #444444;
+    background-color: #ea86b6;
+    color: #fceef5;
 }
 
 .header {
@@ -82,6 +113,7 @@ tr.highlight {
 th {
     background: #444444;
     color: #dddddd;
+    height: 1.5em;
 }
 
 .main_info {
@@ -95,4 +127,138 @@ th {
     padding: 0;
     margin: 0;
     padding-bottom: 3px;
+}
+
+.input_title {
+    width: 90%;
+    display: block;
+    line-height: 2em;
+    font-size: 1em;
+    padding: 0;
+    border-radius: 10px;
+    padding-left: 5%;
+    padding-right: 5%;
+    border: 1px solid #aaa;
+    margin-bottom: 5px;
+}
+.input_body {
+    width: 90%;
+    padding-left: 5%;
+    padding-right: 5%;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    line-height: 2em;
+    display: block;
+    font-size: 1em;
+    margin-bottom: 5px;
+    resize: none;
+}
+.input_btn {
+    width: 100%;
+    background: #777;
+    color: #ddd;
+    border: 0px;
+    border-radius: 10px;
+    line-height: 2em;
+    display: block;
+    font-size: 1em;
+}
+
+.board_container {
+    margin-top: 15px;
+}
+.board_text {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-top: 15px;
+}
+.board_header {
+    text-align: left;
+    padding-left: 5%;
+    padding-right: 5%;
+    line-height: 3em;
+    font-size: 1em;
+    display: flex;
+    justify-content: space-between;
+}
+.board_header span {
+    display: inline-block;
+}
+.delete_btn {
+    user-select: none;
+}
+.board_text.closed .board_body {
+    display: none;
+}
+.board_text.closed .board_footer {
+    display: none;
+}
+.board_body {
+    border-top: 1px solid #ddd;
+    text-align: left;
+    padding-left: 5%;
+    padding-right: 15px;
+    padding-bottom: 4px;
+    padding-top: 7px;
+
+}
+
+.board_footer {
+    text-align: right;
+    font: 0.8em;
+    color: #aaa;
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+
+.btn {
+    display: inline-block;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 330px;
+    height: 3em;
+    font-size: 2em;
+    margin-bottom: 20px;
+    border: 0px;
+}
+
+.btn_register {
+    background-color: #28a745;
+}
+.btn_login {
+    background-color: #17a2b8;
+}
+.btn_short {
+    display: inline-block;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+    border: 0px;
+    height: 2em;
+    font-size: 1.2em;
+}
+.btn_logout {
+    background-color: #ffc107;
+}
+.nodeco {
+    text-decoration: none;
+}
+.btn_exit {
+    background-color: #dc3545;
+}
+
+input.createRoom {
+    padding: 0;
+    margin: 0;
+}
+input[type="text"].createRoom {
+    background-color: #eee;
+    border-radius: 10px 10px 0px 0;
+}
+input[type="text"].createRoom::placeholder {
+    padding-left: 15px;
+}
+input[type="submit"].createRoom {
+    background-color: #007bff;
+    border-radius: 0 0 10px 10px;
 }

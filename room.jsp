@@ -7,9 +7,10 @@
 <jsp:useBean id="rm" class="project.room.RoomManager" scope="application"/>
 <%@ page import="project.room.RoomBean" %>
 <%@ page import="project.member.MemberBean" %>
-<%= session.getAttribute("username") %> 님 환영 합니다.!!!!<BR>
+<html>
+<body>
+<div align="center">
 <%
-    
     Integer rNum = (Integer) session.getAttribute("room");
     RoomBean room = new RoomBean();
     // 현재 방 선택
@@ -33,70 +34,82 @@
     pageContext.setAttribute("r_member", r_member);
     pageContext.setAttribute("cards", cards);
 %>
-<%=session.getAttribute("room")%><br>
-<%=room.existR_member(sessionId)%>
-<h4>방 이름 : <%=room.getR_name()%></h4>
-
-
-
-<div class="gameNum">
-    <%=gameNum%>
-</div>
-
-<table>
-    <tr>
+<jsp:include page="include/header.jsp">
+    <jsp:param name="currentPage" value="ingame"/>
+    <jsp:param name="rname" value="<%=room.getR_name()%>"/>
+</jsp:include>
+<div class="container">
     <%
-        // 인게임 내에선 방제목이 아니라, 현재 누구의 턴인지를 표시한다
-        if(room.get_currentStatus()==1) {
-            if(room.get_currentUser()==session.getAttribute("username")) {
-                // 플레이어의 턴인 경우
+    if(room.get_currentStatus()>1) {
+    %>
+        <div class="gameNum_bg end">
+    <%
+    } else {
+    %>
+        <div class="gameNum_bg">
+    <%
+    }
+    %>    
+        <div class="gameNum">
+            <%=gameNum%>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+        <%
+            // 인게임 내에선 방제목이 아니라, 현재 누구의 턴인지를 표시한다
+            if(room.get_currentStatus()==1) {
+                if(room.get_currentUser()==session.getAttribute("username")) {
+                    // 플레이어의 턴인 경우
+                    %>
+                    <th class="tableTitle self" colspan="2">당신의 턴!</th>
+                    <%
+                } else {
+                    // 다른 플레이어의 턴인 경우
+                    %>
+                    <th class="tableTitle" colspan="2"><%=room.get_currentUser()%>의 턴!</th>
+                    <%
+                }
+            } else{
+                // status가 1이 아닌 경우
                 %>
-                <th class="tableTitle self" colspan="2">당신의 턴!</th>
+                <th class="tableTitle" colspan="2"><%=room.get_SText()%></th>
                 <%
-            } else {
-                // 다른 플레이어의 턴인 경우
-                %>
-                <th class="tableTitle" colspan="2"><%=room.get_currentUser()%>의 턴!</th>
-                <%
-            }
-        } else {
-            // status가 1이 아닌 경우
-            %>
-            <th class="tableTitle" colspan="2"><%=room.getR_name()%></th>
-            <%
+            } 
+        %>
+            
+        </tr>
+        <tr>
+            <th>이름</th>
+            <th>보유 카드 수</th>
+        </tr>
+        <c:forEach var="member" items="${r_member}">
+            <tr>
+                <td>${member.getName()}</td>
+                <td>${member.getCardNum()}</td>
+            </tr>
+        </c:forEach>
+    </table>
+    <%
+        if(room.get_currentStatus()==1){
+            // 게임 플레이 중일때만, 카드가 보인다
+    %>
+    <div class="cards noselect">
+        <c:forEach var="card" items="${cards}" varStatus="status">
+            <div class="card noselect" data-index="${status.index}">${card}</div>
+        </c:forEach>
+    </div>
+    <%
+        } else if (room.getR_memberSize()==3&&room.get_currentStatus()==0) {
+            // game status가 1이고 플레이어가 3명이 모이면 게임을 시작한다
+            room.game_start();
         }
     %>
-        
-    </tr>
-    <tr>
-        <th>이름</th>
-        <th>보유 카드 수</th>
-    </tr>
-    <c:forEach var="member" items="${r_member}">
-        <tr>
-            <td>${member.getName()}</td>
-            <td>${member.getCardNum()}</td>
-        </tr>
-    </c:forEach>
-</table>
-<%
-    if(room.get_currentStatus()==1){
-        // 게임 플레이 중일때만, 카드가 보인다
-%>
-<div class="cards noselect">
-    <c:forEach var="card" items="${cards}" varStatus="status">
-        <div class="card noselect" data-index="${status.index}">${card}</div>
-    </c:forEach>
+    <form action='exitRoom.jsp'>
+    <input class="btn_short btn_exit" type='submit' value='나가기'>
+    </form>
 </div>
-<%
-    } else if (room.getR_memberSize()==3&&room.get_currentStatus()==0) {
-        // game status가 1이고 플레이어가 3명이 모이면 게임을 시작한다
-        room.game_start();
-    }
-%>
-<form action='exitRoom.jsp'>
-<input type='submit' value='나가기'>
-</form>
 <% if(room.get_currentUser()==session.getAttribute("username")) {
     // 자신의 차례일때만, 카드를 선택할 수 있다
     %>
@@ -108,26 +121,14 @@
 <%
     if(room.get_currentStatus()<2){
     // 게임이 종료 상태일 땐, 새로고침하지 않는다
-%>
-<script src="js/setTimeout.js"></script>
-<%
-    } else {
-        String loser = room.get_loser();
-        String winner = room.get_winner();
-
-        if(room.get_loser() != null) {
-            out.println("<script>alert('패배 : "+ loser + "')</script>");
-        } else {
-            out.println("<script>alert('승리 : "+ winner + "')</script>");
-        }
-        %>
-    <div>
-        <h4>게임이 종료되었습니다.</h4>
-        <%
-        if(loser!=null) out.println("<h4>"+loser+"님의 패배입니다.</h4>");
-        else out.println("<h4>"+winner+"님의 승리입니다.</h4>");
-        %>
-    </div>
-        <%
+    // 진행 중인 상태일땐, 주기적으로 새로고침 한다
+    %>
+    <script src="js/setTimeout.js"></script>
+    <%
     }
 %>
+
+<%@ include file="/include/footer.jsp"%>
+</div>
+</body>
+</html>

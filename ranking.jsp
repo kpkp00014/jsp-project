@@ -11,12 +11,10 @@
 </HEAD>
 <BODY>
 <div align="center">
-<div class="header">
-    <a href="/cardstack/index.jsp"><h3>메인화면</h3></a>
-    <H2>랭킹</H2>
-    <a href="/cardstack/board.jsp"><h3>게시판</h3></a>
-</div>
-<HR>
+<jsp:include page="include/header.jsp">
+    <jsp:param name="currentPage" value="ranking"/>
+</jsp:include>
+<div class="container">
 <table border='1' class="ranking_table">
 <tr><th>순위</th><th>ID</th><th>승점</th><th>승리</th><th>패배</th></tr>
 <%
@@ -83,5 +81,9 @@
 	}
 %>
 </table>
+</div>
+<%@ include file="/include/footer.jsp"%>
+
+</div>
 </body>
 </html>

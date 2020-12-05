@@ -18,6 +18,7 @@ public class RoomBean {
     private Integer current_status = 0;
     private String loser = null;
     private String winner = null;
+    private String statusText = "유저를 기다리고 있습니다";;
     // status 0 = game prepare state
     // state 1 = in game state
     // state 2 = game finished state
@@ -51,6 +52,10 @@ public class RoomBean {
         return this.winner;
     }
 
+    public String get_SText() {
+        return this.statusText;
+    }
+
     public void setR_name(String r_name) {
         this.r_name = r_name;
     }
@@ -76,6 +81,7 @@ public class RoomBean {
                     // if ingame?
                     this.current_status = 3;
                     this.loser = this.r_member.get(counter).getName();
+                    this.statusText = this.loser + "님이 강제 종료로 패배하였습니다!";
                     endGame();
                 }
                 this.r_member.remove(counter);
@@ -106,6 +112,7 @@ public class RoomBean {
     }
 
     public void initGameNum() {
+        this.statusText = "유저를 기다리고 있습니다";
         this.game_num = 0;
         this.current_user = null;
         this.current_status = 0;
@@ -161,7 +168,7 @@ public class RoomBean {
         if (this.current_status == 0 && getR_memberSize() > 1) {
             // make current state 0 => 1
             this.current_status = 1;
-
+            this.statusText = "게임 중...";
             // set random player to start fisrt
             double randomValue = Math.random();
             int playerIndex = (int) (randomValue * getR_memberSize());
@@ -175,10 +182,12 @@ public class RoomBean {
         if (this.game_num == 60) {
             this.current_status = 2;
             this.winner = this.current_user;
+            this.statusText = this.winner + "님이 승리하였습니다!";
             endGame();
         } else if (this.game_num > 60) {
             this.current_status = 2;
             this.loser = this.current_user;
+            this.statusText = this.loser + "님이 패배하였습니다!";
             endGame();
         }
     }

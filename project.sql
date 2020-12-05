@@ -11,10 +11,9 @@ create TABLE `board` (
     `bid` INT PRIMARY KEY AUTO_INCREMENT,
     `title` varchar(50) NOT NULL,
     `body` varchar(200) NOT NULL,
-    `date` DATETIME NOT NULL,
-    `category` varchar(10) NOT NULL
+    `date` DATETIME DEFAULT NOW()
 );
-
+// insert into board (uid, title, body) values ("testuser1", "test", "body");
 
 //PROCEDURE
 call ranking;
